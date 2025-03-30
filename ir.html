@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://www.upload.ee/image/16676668/avatar_12095.jpg" type="image/x-icon" />
+    <title>GND Raporlama</title>
+    <style>
+        /* Ortak Stil */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333; 
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-y: auto; 
+        }
+
+        /* Giriş Sayfası */
+        .login-container {
+            position: fixed; 
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            background-color: rgba(0, 0, 0, 0.8); 
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            z-index: 2; 
+        }
+
+        .login-box h1 {
+            margin-bottom: 20px;
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .form-group input {
+            width: 80%;
+            padding: 10px;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #333;
+            color: white;
+        }
+
+        .form-group select {
+            width: 80%;
+            padding: 10px;
+            margin-top: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            background-color: #333;
+            color: white;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #054daa;
+        }
+
+        .btn {
+            background-color: #054daa;
+            color: rgb(255, 255, 255);
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #05326d;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        /* BBCODE Sayfası */
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            opacity: 0.5;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: none;
+            font-size: 14px;
+        }
+
+        .output-container textarea {
+            width: 100%;
+            height: 500px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .copy-btn {
+            background-color: #054daa;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .copy-btn:hover {
+            background-color: #05326d;
+        }
+
+        .loading-container {
+            display: none;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .loading-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .loading-progress {
+            height: 100%;
+            width: 0;
+            background-color: #054daa;
+        }
+
+        .loading-text {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .radio-group {
+        display: flex;
+        align-items: center;
+        }
+
+        .radio-group label {
+       margin-right: 20px;
+        }
+
+        .radio-group input[type="radio"] {
+       margin-right: 20px;
+	   display: none;
+        }
+		
+		.radio-group label{
+			display: none;
+		}
+
+    </style>
+<body>
+
+    <!-- Giriş Ekranı -->
+    <div id="loginPage" class="login-container">
+        <div class="login-box">
+            <img width="200px" src="https://www.upload.ee/image/14272915/LSPDLOGO.png" alt="">
+            <h3>LSPD Panel</h3>
+
+            <div class="form-group">
+                <label for="selection">Rapor Türününüz</label>
+                <select id="selection">
+                    <option value="FTP">Field Training Program</option>
+                </select>
+            </div>
+
+            <button class="btn" onclick="validateCharacter()">Giriş Yap</button>
+            <div id="error-message" class="error-message"></div>
+        </div>
+    </div>
+
+        <!-- Giriş Ekranı Bitiş -->
+
+    <!-- Siber Suçlar Formu -->
+    <div id="ftpPage" class="container" style="display: none;">
+        <h1>İfade Raporu</h1>
+        <h1 style="font-size: 15px;">( <span style="color: red;">*</span> BBCode'u oluşturduktan sonra en alttaki seçenekleri eğer varsa X ile işaretlemeyi unutmayın.)</h1>
+        <div id="questionsContainer"></div>
+
+        <div class="form-group">
+            <label for="adsoyad">Ad Soyad</label>
+            <input type="text" id="adsoyad" placeholder="Örn; Louis Shepherd">
+        </div>
+		
+        <div class="form-group">
+            <label for="kidem">Kıdem</label>
+            <input type="text" id="kidem" placeholder="Örn; Police Officer II">
+        </div>
+
+        <div class="form-group">
+            <label for="rozetnumarasi">Rozet Numarası</label>
+            <input type="text" id="rozetnumarasi" placeholder="Rozet Numarası">
+        </div>
+		
+        <div class="form-group">
+            <label for="opsiyonelek">Opsiyonel Ek Personel</label>
+            <input type="text" id="opsiyonelek" placeholder="Rozet Numarası">
+        </div>
+		
+        <div class="form-group">
+            <label for="adsoyad2">İfade Alınan Kişinin Ad ve Soyadı</label>
+            <input type="text" id="adsoyad2" placeholder="Örn; John Doe">
+        </div>
+
+        <div class="form-group">
+            <label for="telefonnumarasi">İfade Alınan Kişinin Telefon Numarası</label>
+            <input type="text" id="telefonnumarasi" placeholder="Telefon Numarası">
+        </div>
+
+        <div class="form-group">
+            <label for="adres">İfade Alınan Kişinin Adresi</label>
+            <input type="text" id="adres" placeholder="Adres.">
+        </div>
+		
+		<div class="form-group">
+			<label for="dogumtarihi">İfade Alınan Kişinin Doğum Tarihi</label>
+			<input type="text" id="dogumtarihi" placeholder="GG/AA/YYYY">
+		</div>
+		
+		<div class="form-group">
+			<label for="ifadesaati">İfade Saati</label>
+			<input type="text" id="ifadesaati" placeholder="SAAT:DAKİKA">
+		</div>
+
+		<div class="form-group">
+			<label for="ifadetarihi">İfade Tarihi</label>
+			<input type="text" id="ifadetarihi" placeholder="GG/AA/YYYY">
+		</div>
+
+		<div class="form-group">
+			<label for="lokasyon">İfade Lokasyonu</label>
+			<input type="text" id="lokasyon" placeholder="Konum.">
+		</div>
+
+		<div class="form-group">
+			<label for="ifade">İfade</label>
+			<input type="text" id="ifade" placeholder="Verilen İfadeyi Buraya Verilen Bilgiler İle Girin">
+		</div>
+
+		<div class="form-group">
+			<label for="kanit">Kanıt</label>
+			<input type="text" id="kanit" placeholder="İfade Kanıtlandırması">
+		</div>
+
+        <button type="button" class="btn" onclick="generateBBCode()">Raporu Oluştur</button>
+
+        <h1></h1>
+
+        <div class="loading-container" id="loadingContainer">
+            <div class="loading-bar">
+                <div class="loading-progress" id="loadingProgress"></div>
+            </div>
+            <div class="loading-text" id="loadingText">Rapor Hazırlanıyor</div>
+        </div>
+
+        <div class="output-container">
+            <textarea id="bbcodeOutput" readonly="" placeholder="Rapor Hazırlandıktan Sonra Burada Gözükecek"></textarea>
+            <button class="copy-btn" onclick="copyToClipboard()">Raporu Kopyala</button>
+        </div>
+    </div>
+
+        <!-- FTP Formu Bitiş -->
+
+    <script>
+
+        function validateCharacter() {
+            const selectedOption = document.getElementById("selection").value;
+            const errorMessage = document.getElementById("error-message");
+
+                if (selectedOption === "FTP") {
+                    document.getElementById("loginPage").style.display = "none";
+                    document.getElementById("ftpPage").style.display = "block";
+                    createFTPQuestions();
+                } else {
+                    alert(selectedOption + " formu henüz mevcut değil.");
+                }
+            }
+
+            function createFTPQuestions() {
+    const questions = [
+    ];
+
+    const questionsContainer = document.getElementById("questionsContainer");
+
+questions.forEach(q => {
+    const questionHTML = `
+        <div class="form-group">
+            <label for="${q.id}">● ${q.title}</label>
+            <textarea id="${q.id}" rows="3" placeholder="Minimum ${q.minWords} kelimelik bilgilendirme giriniz." data-min-words="${q.minWords}"></textarea>
+            <div id="${q.id}WordCount" class="word-count">Kelime Sayısı: 0</div>
+            <div class="radio-group">
+                <label><input type="radio" name="${q.id}Status" value="Yeterli" checked> Yeterli</label>
+                <label><input type="radio" name="${q.id}Status" value="Orta"> Orta</label>
+                <label><input type="radio" name="${q.id}Status" value="Yetersiz"> Yetersiz</label>
+            </div>
+        </div>
+    `;
+    questionsContainer.innerHTML += questionHTML;
+});
+
+// Karakter sayacı hesaplama bölümü
+const textareas = document.querySelectorAll('textarea');
+textareas.forEach(textarea => {
+    textarea.addEventListener('input', function() {
+        const minWords = this.getAttribute('data-min-words');
+        countWords(this.id, minWords);
+    });
+});
+
+function countWords(textareaId, minWords) {
+    const text = document.getElementById(textareaId).value.trim();
+    const wordCount = text === "" ? 0 : text.split(/\s+/).length;
+    const wordCountDiv = document.getElementById(`${textareaId}WordCount`);
+    wordCountDiv.innerText = `Kelime Sayısı: ${wordCount}`;
+    
+    if (wordCount < minWords) {
+        wordCountDiv.style.color = 'red';
+    } else {
+        wordCountDiv.style.color = 'green';
+    }
+}}
+
+    function generateBBCode() {
+    document.getElementById("loadingContainer").style.display = "block";
+    let progress = 0;
+    const loadingText = document.getElementById("loadingText");
+    const loadingProgress = document.getElementById("loadingProgress");
+
+    let bbcode = `[divbox=transparent]\n\n`;
+    bbcode += `[center][img width=165 height=155]https://www.upload.ee/image/16676668/avatar_12095.jpg[/img]\n\n`;
+    bbcode += `[b]EAST LOS SANTOS STATION[/b][/center]\n\n`;
+    bbcode += `[center][b]İFADE RAPORU[/b][/center]\n\n`;
+	bbcode += `[divbox=transparent]\n\n`;
+	bbcode += `[font=Tahoma]— [b]PERSONEL BİLGİLERİ[/b][/font]\n`;
+	bbcode += `[hr][font=Tahoma]\n`;
+
+    const questions = [
+    ];
+
+    let stage = 0;
+    const interval = setInterval(() => {
+        if (stage < questions.length) {
+            const q = questions[stage];
+            const value = document.getElementById(q.id).value.trim();
+            const selectedStatus = document.querySelector(`input[name="${q.id}Status"]:checked`).value;
+
+            bbcode += `[size=2][font=Courier New][b]${q.title}[/b] ${value}[/font][/size]\n`;
+
+            stage++;
+        }
+
+        progress += 44.3;
+        loadingProgress.style.width = `${progress}%`;
+        loadingText.textContent = `BBCode Hazırlanıyor ${Math.round(progress)}%`;
+		const adsoyad = document.getElementById("adsoyad").value.trim();
+		const kidem = document.getElementById("kidem").value.trim();
+		const rozetnumarasi = document.getElementById("rozetnumarasi").value.trim();
+		const opsiyonelek = document.getElementById("opsiyonelek").value.trim();
+        const adsoyad2 = document.getElementById("adsoyad2").value.trim();
+        const telefonnumarasi = document.getElementById("telefonnumarasi").value.trim();
+        const adres = document.getElementById("adres").value.trim();
+		const dogumtarihi = document.getElementById("dogumtarihi").value.trim();
+		const ifadesaati = document.getElementById("ifadesaati").value.trim();
+		const ifadetarihi = document.getElementById("ifadetarihi").value.trim();
+		const lokasyon = document.getElementById("lokasyon").value.trim();
+		const ifade = document.getElementById("ifade").value.trim();
+		const kanit = document.getElementById("kanit").value.trim();
+		
+        if (progress >= 100) {
+            clearInterval(interval);
+			bbcode += `[b]AD SOYAD:[/b] ${adsoyad}\n`;
+			bbcode += `[b]RÜTBESİ:[/b] ${kidem}\n`;
+			bbcode += `[b]ROZET NUMARASI:[/b] ${rozetnumarasi}\n`;
+            bbcode += `[b][OPSIYONEL] EK PERSONEL:[/b] ${opsiyonelek}\n`; 
+            bbcode += `[/font]\n`;
+            bbcode += `[hr]\n`; 
+            bbcode += `[font=Tahoma]— [b]İFADE ALINAN BİLGİLERİ[/b][/font]\n`;
+			bbcode += `[hr][font=Tahoma]\n`;
+			bbcode += `[b]AD SOYAD:[/b] ${adsoyad2}.\n`
+			bbcode += `[b]TELEFON NUMARASI:[/b] ${telefonnumarasi}.\n`
+			bbcode += `[b]ADRES:[/b] ${adres}.\n`
+			bbcode += `[b]DOĞUM TARİHİ:[/b] ${dogumtarihi}.\n`
+			bbcode += `[/font]\n`
+			bbcode += `[hr][font=Tahoma]— [b]İFADE BİLGİLERİ[/b][/font]\n`
+			bbcode += `[hr][font=Tahoma]\n`
+			bbcode += `[b]İFADE SAATİ:[/b] ${ifadesaati}.\n`
+			bbcode += `[b]İFADE TARİHİ:[/b] ${ifadetarihi}.\n`
+			bbcode += `[b]LOKASYON:[/b] ${lokasyon}.\n`
+			bbcode += `[/font]\n`
+			bbcode += `[hr]\n`
+			bbcode += `[font=Tahoma]— [b]İFADE RAPORU[/b][/font](Minimum 20 kelime)\n`
+			bbcode += `[hr][font=Tahoma]\n`
+			bbcode += `${ifade}\n`
+			bbcode += `[hr]\n\n`
+			bbcode += `[font=Tahoma]— [b]KANIT ALANI[/b][/font]\n\n`
+			bbcode += `[spoiler]\n`
+			bbcode += `${kanit}.\n`
+			bbcode += `[/spoiler]\n\n`
+			bbcode += `[/divbox]\n`
+
+            document.getElementById("bbcodeOutput").value = bbcode;
+            loadingText.textContent = "Kod Hazır";
+            setTimeout(() => {
+                document.getElementById("loadingContainer").style.display = "none";
+            }, 500);
+        }
+    }, 1000);
+}
+
+        function copyToClipboard() {
+            const bbcodeOutput = document.getElementById("bbcodeOutput");
+            bbcodeOutput.select();
+            document.execCommand("copy");
+            alert("Rapor Kopyalandı");
+        }
+
+
+		validateCharacter();
+
+    </script>
+
+</body></html>
