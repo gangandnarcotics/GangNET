@@ -81,6 +81,7 @@
             </div>
             <div class="form-group" style="margin-top: 2px;">
                 <select id="selection">
+                    <option value="VR">Vardiya Raporlama</option>
                     <option value="OK">Olay ve Kazalar</option>
                     <option value="SK">Sorgu Kayıtları</option>
                     <option value="IR">İfade Raporları</option>
@@ -92,34 +93,65 @@
             <div id="error-message" class="error-message"></div>
         </div>
     </div>
-    <script>
-        function validateCharacter() {
-            const fullname = document.getElementById("fullname").value.trim();
-            const password = document.getElementById("password").value;
-            const selectedOption = document.getElementById("selection").value;
-            const errorMessage = document.getElementById("error-message");
+<script>
+	// Kullanıcı rolleri nesnesini tanımlayın
+	const userRoles = {
+		"Hank Robertson": { rank: "Police Detective III", badgeNumber: "093234" },
+		"Noah Vance": { rank: "Police Detective I", badgeNumber: "071692" },
+		"Raskal Riley": { rank: "Police Detective I", badgeNumber: "82855" },
+		"Dmitry Willis": { rank: "Police Detective I", badgeNumber: "020026" },
+		"Leandro Sverdonich": { rank: "Police Officer III", badgeNumber: "004202" },
+		"Matthew Brooks": { rank: "Police Officer III", badgeNumber: "048973" },
+		"Connor McCharty": { rank: "Police Officer II", badgeNumber: "033934" },
+		"Fanny Neubauer": { rank: "Police Officer II", badgeNumber: "032766" },
+		"Allison Reed": { rank: "Police Officer II", badgeNumber: "097974" },
+		"Seth Castro": { rank: "Police Officer II", badgeNumber: "019715" },
+	// Diğer kullanıcı adları, kıdem bilgileri ve rozet numaraları buraya eklenebilir
+	};
 
-            if (fullname === "") {
-                errorMessage.textContent = "Lütfen adınızı ve soyadınızı girin!";
-                return;
-            }
-            
-            if (password !== "GND123") {
-                errorMessage.textContent = "Şifre yanlış!";
-                return;
-            }
+	function validateCharacter() {
+		const fullname = document.getElementById("fullname").value.trim();
+		const password = document.getElementById("password").value;
+		const selectedOption = document.getElementById("selection").value;
+		const errorMessage = document.getElementById("error-message");
 
-            errorMessage.textContent = "";
+		const allowedNames = Object.keys(userRoles); // Kullanıcı adlarını al
 
-            switch (selectedOption) {
-                case "OK": window.location.href = "ok.html"; break;
-                case "SK": window.location.href = "sk.html"; break;
-                case "IR": window.location.href = "ir.html"; break;
-                case "GN": window.location.href = "gn.html"; break;
-                case "RM": window.location.href = "rm.html"; break;
-                default: alert(selectedOption + " formu henüz mevcut değil.");
-            }
-        }
-    </script>
+		if (fullname === "") {
+			errorMessage.textContent = "Lütfen adınızı ve soyadınızı girin!";
+			return;
+		}
+
+		if (!allowedNames.includes(fullname)) {
+			errorMessage.textContent = "Bu isimle giriş yapma izniniz yok!";
+			return;
+		}
+
+		if (password !== "GND123") {
+			errorMessage.textContent = "Şifre yanlış!";
+			return;
+		}
+
+		// Kullanıcı ismini localStorage'a kaydet
+		localStorage.setItem("username", fullname);
+
+		// Kıdem ve rozet numarasını localStorage'a kaydet
+		const userInfo = userRoles[fullname];
+		localStorage.setItem("rank", userInfo.rank); // Kıdem bilgisini al ve kaydet
+		localStorage.setItem("badgeNumber", userInfo.badgeNumber); // Rozet numarasını al ve kaydet
+
+		errorMessage.textContent = "";
+
+		switch (selectedOption) {
+			case "VR": window.location.href = "vr.html"; break;
+			case "OK": window.location.href = "ok.html"; break;
+			case "SK": window.location.href = "sk.html"; break;
+			case "IR": window.location.href = "ir.html"; break;
+			case "GN": window.location.href = "gn.html"; break;
+			case "RM": window.location.href = "rm.html"; break;
+			default: alert(selectedOption + " formu henüz mevcut değil.");
+		}
+	}
+</script>
 </body>
 </html>

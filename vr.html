@@ -244,58 +244,48 @@
 
     <!-- Siber Suçlar Formu -->
     <div id="ftpPage" class="container" style="display: none;">
-        <h1>İfade Raporu</h1>
+        <h1>Vardiya Raporu</h1>
         <h1 style="font-size: 15px;">( <span style="color: red;">*</span> BBCode'u oluşturduktan sonra en alttaki seçenekleri eğer varsa X ile işaretlemeyi unutmayın.)</h1>
         <div id="questionsContainer"></div>
 		
         <div class="form-group">
-            <label for="opsiyonelek">Opsiyonel Ek Personel</label>
-            <input type="text" id="opsiyonelek" placeholder="Rozet Numarası">
+            <label for="birimkodu">Birim Kodu</label>
+            <input type="text" id="birimkodu" placeholder="Örn; 2G24">
         </div>
 		
         <div class="form-group">
-            <label for="adsoyad2">İfade Alınan Kişinin Ad ve Soyadı</label>
-            <input type="text" id="adsoyad2" placeholder="Örn; John Doe">
+            <label for="tarih">Tarih</label>
+            <input type="text" id="tarih" placeholder="GG.AA.YYYY">
         </div>
 
         <div class="form-group">
-            <label for="telefonnumarasi">İfade Alınan Kişinin Telefon Numarası</label>
-            <input type="text" id="telefonnumarasi" placeholder="Telefon Numarası">
+            <label for="baslangic">Başlangıç Saati</label>
+            <input type="text" id="baslangic" placeholder="SS:DD">
         </div>
 
         <div class="form-group">
-            <label for="adres">İfade Alınan Kişinin Adresi</label>
-            <input type="text" id="adres" placeholder="Adres.">
+            <label for="bitis">Bitiş Saati</label>
+            <input type="text" id="bitis" placeholder="SS:DD">
         </div>
 		
 		<div class="form-group">
-			<label for="dogumtarihi">İfade Alınan Kişinin Doğum Tarihi</label>
-			<input type="text" id="dogumtarihi" placeholder="GG/AA/YYYY">
+			<label for="saat">Toplam Devriye Saati</label>
+			<input type="text" id="saat" placeholder="SS:DD">
 		</div>
 		
 		<div class="form-group">
-			<label for="ifadesaati">İfade Saati</label>
-			<input type="text" id="ifadesaati" placeholder="SAAT:DAKİKA">
+			<label for="baslangicekran">Başlangıç Kanıtlandırması</label>
+			<input type="text" id="baslangicekran" placeholder="Ekran Görüntüsü Linki">
 		</div>
 
 		<div class="form-group">
-			<label for="ifadetarihi">İfade Tarihi</label>
-			<input type="text" id="ifadetarihi" placeholder="GG/AA/YYYY">
+			<label for="olayekran">Olay Kanıtlandırması</label>
+			<input type="text" id="olayekran" placeholder="Ekran Görüntüsü Linki">
 		</div>
 
 		<div class="form-group">
-			<label for="lokasyon">İfade Lokasyonu</label>
-			<input type="text" id="lokasyon" placeholder="Konum.">
-		</div>
-
-		<div class="form-group">
-			<label for="ifade">İfade</label>
-			<input type="text" id="ifade" placeholder="Verilen İfadeyi Buraya Verilen Bilgiler İle Girin">
-		</div>
-
-		<div class="form-group">
-			<label for="kanit">Kanıt</label>
-			<input type="text" id="kanit" placeholder="İfade Kanıtlandırması">
+			<label for="bitisekran">Bitiş Kanıtlandırması</label>
+			<input type="text" id="bitisekran" placeholder="Ekran Görüntüsü Linki.">
 		</div>
 
         <button type="button" class="btn" onclick="generateBBCode()">Raporu Oluştur</button>
@@ -382,13 +372,12 @@ function countWords(textareaId, minWords) {
     const loadingText = document.getElementById("loadingText");
     const loadingProgress = document.getElementById("loadingProgress");
 
-    let bbcode = `[divbox=transparent]\n\n`;
-    bbcode += `[center][img width=165 height=155]https://www.upload.ee/image/16676668/avatar_12095.jpg[/img]\n\n`;
-    bbcode += `[b]EAST LOS SANTOS STATION[/b][/center]\n\n`;
-    bbcode += `[center][b]İFADE RAPORU[/b][/center]\n\n`;
-	bbcode += `[divbox=transparent]\n\n`;
-	bbcode += `[font=Tahoma]— [b]PERSONEL BİLGİLERİ[/b][/font]\n`;
-	bbcode += `[hr][font=Tahoma]\n`;
+    let bbcode = ` \n`;
+    bbcode += `[divbox=transparent]\n`;
+    bbcode += `[hr]\n\n`;
+    bbcode += `[center][img width=250 height=170]https://i.imgur.com/Vvg9yhS.png[/img][/center]\n\n`;
+	bbcode += `[center][i][b][font=Courier New][size=2]"we intimidate those who intimidate others"[/size][/font][/b][/i][/center]\n`;
+	bbcode += `[hr]\n`;
 
     const questions = [
     ];
@@ -408,48 +397,33 @@ function countWords(textareaId, minWords) {
         progress += 44.3;
         loadingProgress.style.width = `${progress}%`;
         loadingText.textContent = `BBCode Hazırlanıyor ${Math.round(progress)}%`;
-		const opsiyonelek = document.getElementById("opsiyonelek").value.trim();
-        const adsoyad2 = document.getElementById("adsoyad2").value.trim();
-        const telefonnumarasi = document.getElementById("telefonnumarasi").value.trim();
-        const adres = document.getElementById("adres").value.trim();
-		const dogumtarihi = document.getElementById("dogumtarihi").value.trim();
-		const ifadesaati = document.getElementById("ifadesaati").value.trim();
-		const ifadetarihi = document.getElementById("ifadetarihi").value.trim();
-		const lokasyon = document.getElementById("lokasyon").value.trim();
-		const ifade = document.getElementById("ifade").value.trim();
-		const kanit = document.getElementById("kanit").value.trim();
+		const birimkodu = document.getElementById("birimkodu").value.trim();
+        const tarih = document.getElementById("tarih").value.trim();
+        const baslangic = document.getElementById("baslangic").value.trim();
+        const bitis = document.getElementById("bitis").value.trim();
+		const saat = document.getElementById("saat").value.trim();
+		const baslangicekran = document.getElementById("baslangicekran").value.trim();
+		const olayekran = document.getElementById("olayekran").value.trim();
+		const bitisekran = document.getElementById("bitisekran").value.trim();
 		
         if (progress >= 100) {
             clearInterval(interval);
-			bbcode += `[b]AD SOYAD:[/b] ${username}\n`;
-			bbcode += `[b]RÜTBESİ:[/b] ${rank}\n`;
-			bbcode += `[b]ROZET NUMARASI:[/b] ${badgeNumber}\n`;
-            bbcode += `[b][OPSIYONEL] EK PERSONEL:[/b] ${opsiyonelek}\n`; 
-            bbcode += `[/font]\n`;
+			bbcode += `[color=#666666][b]Birim Kodu:[/b][/color] ${birimkodu}\n`;
+			bbcode += `[color=#666666][b]Saha Raporun Yazılma Tarihi [GG.AA.YYYY]:[/b][/color] ${tarih}\n`;
+			bbcode += `[color=#666666][b]Devriye Başlangıcı [SAAT:DAKİKA]:[/b][/color] ${baslangic}\n`;
+            bbcode += `[color=#666666][b]Devriye Bitişi [SAAT:DAKİKA]:[/b][/color] ${bitis}\n`; 
+            bbcode += `[color=#666666][b]Devriye Saati [OPSİ:YONEL]:[/b][/color] ${saat}\n`;
             bbcode += `[hr]\n`; 
-            bbcode += `[font=Tahoma]— [b]İFADE ALINAN BİLGİLERİ[/b][/font]\n`;
-			bbcode += `[hr][font=Tahoma]\n`;
-			bbcode += `[b]AD SOYAD:[/b] ${adsoyad2}.\n`
-			bbcode += `[b]TELEFON NUMARASI:[/b] ${telefonnumarasi}.\n`
-			bbcode += `[b]ADRES:[/b] ${adres}.\n`
-			bbcode += `[b]DOĞUM TARİHİ:[/b] ${dogumtarihi}.\n`
-			bbcode += `[/font]\n`
-			bbcode += `[hr][font=Tahoma]— [b]İFADE BİLGİLERİ[/b][/font]\n`
-			bbcode += `[hr][font=Tahoma]\n`
-			bbcode += `[b]İFADE SAATİ:[/b] ${ifadesaati}.\n`
-			bbcode += `[b]İFADE TARİHİ:[/b] ${ifadetarihi}.\n`
-			bbcode += `[b]LOKASYON:[/b] ${lokasyon}.\n`
-			bbcode += `[/font]\n`
-			bbcode += `[hr]\n`
-			bbcode += `[font=Tahoma]— [b]İFADE RAPORU[/b][/font](Minimum 20 kelime)\n`
-			bbcode += `[hr][font=Tahoma]\n`
-			bbcode += `${ifade}\n`
+            bbcode += `[spoiler=Saha Kanıtlandırması][Devriyeye başlangıç, devriyeyi bitiriş, birime katılan personel, birimden ayrılan personel kanıtlamasını zorunlu olarak yapmalısınız.]\n\n`;
+			bbcode += `[color=red]Devriye Başlangıcı[/color][color=grey] • [/color]\n`;
+			bbcode += `${baslangicekran}\n\n`
 			bbcode += `[hr]\n\n`
-			bbcode += `[font=Tahoma]— [b]KANIT ALANI[/b][/font]\n\n`
-			bbcode += `[spoiler]\n`
-			bbcode += `${kanit}.\n`
-			bbcode += `[/spoiler]\n\n`
-			bbcode += `[/divbox]\n`
+			bbcode += `[color=red]Olay Kanıtlandırmaları[/color][color=grey] • [/color]\n`
+			bbcode += `${olayekran}\n\n`
+			bbcode += `[hr]\n\n`
+			bbcode += `[color=red]Devriye Sonu[/color][color=grey] • [/color]\n`
+			bbcode += `${bitisekran}\n`
+			bbcode += `[/spoiler]\n`
 
             document.getElementById("bbcodeOutput").value = bbcode;
             loadingText.textContent = "Kod Hazır";
