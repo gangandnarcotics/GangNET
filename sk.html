@@ -196,6 +196,32 @@
 
     </style>
 <body>
+    <div id="welcomeMessage"></div>
+    
+    <button onclick="logout()">Çıkış Yap</button>
+
+    <script>
+		// Kullanıcı adını, kıdem bilgisini ve rozet numarasını localStorage'dan al
+		const username = localStorage.getItem("username");
+		const rank = localStorage.getItem("rank");
+		const badgeNumber = localStorage.getItem("badgeNumber");
+
+		if (username) {
+			// Kullanıcı adını, kıdem bilgisini ve rozet numarasını sayfada bir yere yazdır
+			document.getElementById("welcomeMessage").innerText = `Hoş geldiniz, ${username}!`;
+			document.getElementById("kidem").value = rank; // Kıdem bilgisini ilgili alana yaz
+			document.getElementById("rozetnumarasi").value = badgeNumber; // Rozet numarasını ilgili alana yaz
+		} else {
+			document.getElementById("welcomeMessage").innerText = "Hoş geldiniz!";
+		}
+
+        // Çıkış yapma fonksiyonu
+        function logout() {
+            localStorage.removeItem("username"); // Kullanıcı adını sil
+            window.location.href = "index.html"; // Giriş sayfasına yönlendir
+        }
+    </script>
+
 
     <!-- Giriş Ekranı -->
     <div id="loginPage" class="login-container">
@@ -224,25 +250,10 @@
         <div id="questionsContainer"></div>
 
         <div class="form-group">
-            <label for="adsoyad">Ad Soyad</label>
-            <input type="text" id="adsoyad" placeholder="Örn; Louis Shepherd">
-        </div>
-		
-        <div class="form-group">
-            <label for="kidem">Kıdem</label>
-            <input type="text" id="kidem" placeholder="Örn; Police Officer II">
-        </div>
-
-        <div class="form-group">
             <label for="birimkidemi">Birim Kıdemi</label>
             <input type="text" id="birimkidemi" placeholder="Örn; Gang Officer">
         </div>
 
-        <div class="form-group">
-            <label for="rozetnumarasi">Rozet Numarası</label>
-            <input type="text" id="rozetnumarasi" placeholder="Rozet Numarası">
-        </div>
-		
         <div class="form-group">
             <label for="opsiyonelek">[OPSIYONEL] Ek Personel</label>
             <input type="text" id="opsiyonelek" placeholder="Örn; Matthew Brooks, eğer yoksa N/A yazın.">
@@ -399,10 +410,7 @@ function countWords(textareaId, minWords) {
         progress += 44.3;
         loadingProgress.style.width = `${progress}%`;
         loadingText.textContent = `BBCode Hazırlanıyor ${Math.round(progress)}%`;
-		const adsoyad = document.getElementById("adsoyad").value.trim();
-		const kidem = document.getElementById("kidem").value.trim();
 		const birimkidemi = document.getElementById("birimkidemi").value.trim();
-		const rozetnumarasi = document.getElementById("rozetnumarasi").value.trim();
 		const opsiyonelek = document.getElementById("opsiyonelek").value.trim();
         const raporbasligi = document.getElementById("raporbasligi").value.trim();
         const raportarihi = document.getElementById("raportarihi").value.trim();
@@ -414,10 +422,10 @@ function countWords(textareaId, minWords) {
 		
         if (progress >= 100) {
             clearInterval(interval);
-			bbcode += `[size=2][font=Courier New][b]Ad Soyad:[/b] ${adsoyad}\n`;
-			bbcode += `[b]Kıdem:[/b] ${kidem}\n`;
+			bbcode += `[size=2][font=Courier New][b]Ad Soyad:[/b] ${username}\n`;
+			bbcode += `[b]Kıdem:[/b] ${rank}\n`;
 			bbcode += `[b]Birim Kıdemi:[/b] ${birimkidemi}\n`;
-			bbcode += `[b]Rozet Numarası:[/b] ${rozetnumarasi}\n`;
+			bbcode += `[b]Rozet Numarası:[/b] ${badgeNumber}\n`;
 			bbcode += `[b][OPSIYONEL] Ek Personel[/b]: ${opsiyonelek}\n`;
             bbcode += `[/font][/size][/div][/div]\n\n`; 
             bbcode += `[div style="color:#000; column-gap:10px; border: 1px solid #000; padding:10px;"]\n`;
