@@ -71,9 +71,9 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             margin-top: 20px;
-            width: 100%;
+            width: 82%;
         }
 
         .btn:hover {
@@ -258,20 +258,46 @@
             <input type="text" id="tarih" placeholder="GG.AA.YYYY">
         </div>
 
-        <div class="form-group">
-            <label for="baslangic">Başlangıç Saati</label>
-            <input type="text" id="baslangic" placeholder="SS:DD">
-        </div>
-
-        <div class="form-group">
-            <label for="bitis">Bitiş Saati</label>
-            <input type="text" id="bitis" placeholder="SS:DD">
-        </div>
-		
 		<div class="form-group">
-			<label for="saat">Toplam Devriye Saati</label>
-			<input type="text" id="saat" placeholder="SS:DD">
+			<label for="baslangic">Başlangıç Saati</label>
+			<input type="text" id="baslangic" placeholder="SS:DD">
 		</div>
+
+		<div class="form-group">
+			<label for="bitis">Bitiş Saati</label>
+			<input type="text" id="bitis" placeholder="SS:DD">
+		</div>
+
+		<div class="form-group">
+			<label for="toplamDevriyeSaati">Toplam Devriye Saati</label>
+			<input type="text" id="toplamDevriyeSaati" placeholder="SS:DD" readonly>
+		</div>
+
+		<button type="button" class="btn" onclick="hesaplaSaatFarki()">Saat Farkını Hesapla</button>
+
+		<script>
+			function hesaplaSaatFarki() {
+				const baslangic = document.getElementById("baslangic").value;
+				const bitis = document.getElementById("bitis").value;
+
+				const [baslangicSaat, baslangicDakika] = baslangic.split(':').map(Number);
+				const [bitisSaat, bitisDakika] = bitis.split(':').map(Number);
+		
+				const baslangicDakikaToplam = baslangicSaat * 60 + baslangicDakika;
+				const bitisDakikaToplam = bitisSaat * 60 + bitisDakika;
+
+				let farkDakika = bitisDakikaToplam - baslangicDakikaToplam;
+
+				if (farkDakika < 0) {
+					farkDakika += 24 * 60;
+				}
+
+				const saat = Math.floor(farkDakika / 60);
+				const dakika = farkDakika % 60;
+
+				document.getElementById("toplamDevriyeSaati").value = `${saat}:${dakika < 10 ? '0' : ''}${dakika}`;
+			}
+		</script>
 		
 		<div class="form-group">
 			<label for="baslangicekran">Başlangıç Kanıtlandırması</label>
@@ -401,7 +427,7 @@ function countWords(textareaId, minWords) {
         const tarih = document.getElementById("tarih").value.trim();
         const baslangic = document.getElementById("baslangic").value.trim();
         const bitis = document.getElementById("bitis").value.trim();
-		const saat = document.getElementById("saat").value.trim();
+		const toplamDevriyeSaati = document.getElementById("toplamDevriyeSaati").value.trim();
 		const baslangicekran = document.getElementById("baslangicekran").value.trim();
 		const olayekran = document.getElementById("olayekran").value.trim();
 		const bitisekran = document.getElementById("bitisekran").value.trim();
@@ -412,7 +438,7 @@ function countWords(textareaId, minWords) {
 			bbcode += `[color=#666666][b]Saha Raporun Yazılma Tarihi [GG.AA.YYYY]:[/b][/color] ${tarih}\n`;
 			bbcode += `[color=#666666][b]Devriye Başlangıcı [SAAT:DAKİKA]:[/b][/color] ${baslangic}\n`;
             bbcode += `[color=#666666][b]Devriye Bitişi [SAAT:DAKİKA]:[/b][/color] ${bitis}\n`; 
-            bbcode += `[color=#666666][b]Devriye Saati [OPSİ:YONEL]:[/b][/color] ${saat}\n`;
+            bbcode += `[color=#666666][b]Devriye Saati [OPSİ:YONEL]:[/b][/color] ${toplamDevriyeSaati}\n`;
             bbcode += `[hr]\n`; 
             bbcode += `[spoiler=Saha Kanıtlandırması][Devriyeye başlangıç, devriyeyi bitiriş, birime katılan personel, birimden ayrılan personel kanıtlamasını zorunlu olarak yapmalısınız.]\n\n`;
 			bbcode += `[color=red]Devriye Başlangıcı[/color][color=grey] • [/color]\n`;

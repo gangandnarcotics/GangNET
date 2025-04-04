@@ -270,8 +270,9 @@
         </div>
 
         <div class="form-group">
-            <label for="olayaciklamasi">Sorgu Açıklaması</label>
-            <input type="text" id="olayaciklamasi" placeholder="Minimum 40 kelime olay açıklaması.">
+            <label for="olayaciklamasi">Sorgu Açıklaması (Minimum 40 Kelime)</label>
+			<textarea id="olayaciklamasi" placeholder="Sorgu Açıklaması" rows="4"></textarea>
+			<div id="olayaciklamasiWordCount" class="word-count">Kelime Sayısı: 0</div>
         </div>
 		
 		<div class="form-group">
@@ -365,7 +366,7 @@ function countWords(textareaId, minWords) {
     const wordCountDiv = document.getElementById(`${textareaId}WordCount`);
     wordCountDiv.innerText = `Kelime Sayısı: ${wordCount}`;
     
-    if (wordCount < minWords) {
+    if (wordCount < 40) {
         wordCountDiv.style.color = 'red';
     } else {
         wordCountDiv.style.color = 'green';
